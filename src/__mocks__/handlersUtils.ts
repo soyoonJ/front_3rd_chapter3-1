@@ -47,8 +47,7 @@ export const setupMockHandlerDeletion = (initEvents = [] as Event[]) => {
     http.delete('/api/events/:id', ({ params }) => {
       const { id } = params;
 
-      const targetEventIndex = initEvents.findIndex((event) => event.id === id);
-      initEvents.splice(targetEventIndex, 1);
+      initEvents = initEvents.filter((event) => event.id !== id);
 
       return HttpResponse.json(null, { status: 204 });
     })
