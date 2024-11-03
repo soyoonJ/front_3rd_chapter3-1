@@ -162,8 +162,89 @@ it('존재하는 이벤트 삭제 시 에러없이 아이템이 삭제된다.', 
   expect(result.current.events).toEqual([]);
 });
 
-it("이벤트 로딩 실패 시 '이벤트 로딩 실패'라는 텍스트와 함께 에러 토스트가 표시되어야 한다", async () => {});
+const toastMock = vi.fn();
+vi.mock('@chakra-ui/react', () => {
+  const actual = vi.importActual('@chakra-ui/react');
 
-it("존재하지 않는 이벤트 수정 시 '일정 저장 실패'라는 토스트가 노출되며 에러 처리가 되어야 한다", async () => {});
+  return {
+    ...actual,
+    useToast: () => toastMock,
+  };
+});
 
-it("네트워크 오류 시 '일정 삭제 실패'라는 텍스트가 노출되며 이벤트 삭제가 실패해야 한다", async () => {});
+it("이벤트 로딩 실패 시 '이벤트 로딩 실패'라는 텍스트와 함께 에러 토스트가 표시되어야 한다", async () => {
+  server.use(
+    http.get('/api/events', () => {
+      return HttpResponse.error();
+    })
+  );
+
+  const { result } = renderHook(() => useEventOperations(false, () => {}));
+
+  await act(async () => {
+    await result.current.fetchEvents();
+  });
+
+  expect(result.current.events).toEqual([]);
+  expect(toastMock).toHaveBeenCalledWith({
+    title: '이벤트 로딩 실패',
+    status: 'error',
+    duration: 3000,
+    isClosable: true,
+  });
+});
+
+it("존재하지 않는 이벤트 수정 시 '일정 저장 실패'라는 토스트가 노출되며 에러 처리가 되어야 한다", async () => {
+  server.use(
+    http.put('/api/events/:id', () => {
+      return HttpResponse.error();
+    })
+  );
+
+  const { result } = renderHook(() => useEventOperations(true, () => {}));
+
+  const updatedEvent = {
+    id: '2',
+    title: '기존 회의 updated',
+    date: '2024-10-15',
+    startTime: '09:00',
+    endTime: '11:00',
+    description: '기존 팀 미팅',
+    location: '회의실 B',
+    category: '업무',
+    repeat: { type: 'none', interval: 0 },
+    notificationTime: 10,
+  };
+
+  await act(async () => {
+    await result.current.saveEvent(updatedEvent as Event);
+  });
+
+  expect(toastMock).toHaveBeenCalledWith({
+    title: '일정 저장 실패',
+    status: 'error',
+    duration: 3000,
+    isClosable: true,
+  });
+});
+
+it("네트워크 오류 시 '일정 삭제 실패'라는 텍스트가 노출되며 이벤트 삭제가 실패해야 한다", async () => {
+  server.use(
+    http.delete('/api/events/:id', () => {
+      return HttpResponse.error();
+    })
+  );
+
+  const { result } = renderHook(() => useEventOperations(false, () => {}));
+
+  await act(async () => {
+    await result.current.deleteEvent('1');
+  });
+
+  expect(toastMock).toHaveBeenCalledWith({
+    title: '일정 삭제 실패',
+    status: 'error',
+    duration: 3000,
+    isClosable: true,
+  });
+});
