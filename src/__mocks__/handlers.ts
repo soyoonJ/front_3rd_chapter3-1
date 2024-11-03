@@ -26,7 +26,7 @@ export const handlers = [
     return HttpResponse.json(updates);
   }),
 
-  http.delete('/api/events/:id', ({ params }) => {
+  http.delete('/api/events/:id', () => {
     return HttpResponse.json(null, { status: 204 });
   }),
 ];
