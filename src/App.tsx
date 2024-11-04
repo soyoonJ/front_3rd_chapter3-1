@@ -1,12 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
   Box,
   Button,
   Checkbox,
-  CloseButton,
   Flex,
   FormControl,
   FormLabel,
@@ -24,6 +20,7 @@ import { useRef, useState } from 'react';
 
 import { EventItem } from './components/EventItem.tsx';
 import { MonthView } from './components/MonthView.tsx';
+import { NotificationAlert } from './components/NotificationAlert.tsx';
 import { OverlapAlertDialog } from './components/OverlapAlertDialog.tsx';
 import { WeekView } from './components/WeekView.tsx';
 import { CATEGORIES, NOTIFICATION_OPTIONS } from './constants/constants.ts';
@@ -356,15 +353,11 @@ function App() {
       {notifications.length > 0 && (
         <VStack position="fixed" top={4} right={4} spacing={2} align="flex-end">
           {notifications.map((notification, index) => (
-            <Alert key={index} status="info" variant="solid" width="auto">
-              <AlertIcon />
-              <Box flex="1">
-                <AlertTitle fontSize="sm">{notification.message}</AlertTitle>
-              </Box>
-              <CloseButton
-                onClick={() => setNotifications((prev) => prev.filter((_, i) => i !== index))}
-              />
-            </Alert>
+            <NotificationAlert
+              key={index}
+              notification={notification}
+              onClick={() => setNotifications((prev) => prev.filter((_, i) => i !== index))}
+            />
           ))}
         </VStack>
       )}
