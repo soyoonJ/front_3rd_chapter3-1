@@ -31,7 +31,7 @@ import { useRef, useState } from 'react';
 import { MonthView } from './components/MonthView.tsx';
 import { OverlapAlertDialog } from './components/OverlapAlertDialog.tsx';
 import { WeekView } from './components/WeekView.tsx';
-import { CATEGORIES } from './constants/constants.ts';
+import { CATEGORIES, NOTIFICATION_OPTIONS } from './constants/constants.ts';
 import { useCalendarView } from './hooks/useCalendarView.ts';
 import { useEventForm } from './hooks/useEventForm.ts';
 import { useEventOperations } from './hooks/useEventOperations.ts';
@@ -40,14 +40,6 @@ import { useSearch } from './hooks/useSearch.ts';
 import { Event, EventForm, RepeatType } from './types';
 import { findOverlappingEvents } from './utils/eventOverlap';
 import { getTimeErrorMessage } from './utils/timeValidation';
-
-const notificationOptions = [
-  { value: 1, label: '1분 전' },
-  { value: 10, label: '10분 전' },
-  { value: 60, label: '1시간 전' },
-  { value: 120, label: '2시간 전' },
-  { value: 1440, label: '1일 전' },
-];
 
 function App() {
   const {
@@ -223,7 +215,7 @@ function App() {
               value={notificationTime}
               onChange={(e) => setNotificationTime(Number(e.target.value))}
             >
-              {notificationOptions.map((option) => (
+              {NOTIFICATION_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -361,7 +353,7 @@ function App() {
                     <Text>
                       알림:{' '}
                       {
-                        notificationOptions.find(
+                        NOTIFICATION_OPTIONS.find(
                           (option) => option.value === event.notificationTime
                         )?.label
                       }
