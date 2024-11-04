@@ -11,14 +11,13 @@ import {
   IconButton,
   Input,
   Select,
-  Text,
   Tooltip,
   useToast,
   VStack,
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 
-import { EventItem } from './components/EventItem.tsx';
+import EventSearch from './components/EventSearch.tsx';
 import { MonthView } from './components/MonthView.tsx';
 import { NotificationAlert } from './components/NotificationAlert.tsx';
 import { OverlapAlertDialog } from './components/OverlapAlertDialog.tsx';
@@ -298,30 +297,14 @@ function App() {
           )}
         </VStack>
 
-        <VStack data-testid="event-list" w="500px" h="full" overflowY="auto">
-          <FormControl>
-            <FormLabel>일정 검색</FormLabel>
-            <Input
-              placeholder="검색어를 입력하세요"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </FormControl>
-
-          {filteredEvents.length === 0 ? (
-            <Text>검색 결과가 없습니다.</Text>
-          ) : (
-            filteredEvents.map((event) => (
-              <EventItem
-                key={event.id}
-                event={event}
-                notifiedEvents={notifiedEvents}
-                onEdit={() => editEvent(event)}
-                onDelete={() => deleteEvent(event.id)}
-              />
-            ))
-          )}
-        </VStack>
+        <EventSearch
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          filteredEvents={filteredEvents}
+          notifiedEvents={notifiedEvents}
+          editEvent={editEvent}
+          deleteEvent={deleteEvent}
+        />
       </Flex>
 
       <OverlapAlertDialog
