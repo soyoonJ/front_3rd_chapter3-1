@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { CATEGORIES, NOTIFICATION_OPTIONS } from '../constants/constants';
+import { useDialog } from '../hooks/useDialog';
 import { useEventForm } from '../hooks/useEventForm';
 import { Event, EventForm, RepeatType } from '../types';
 import { findOverlappingEvents } from '../utils/eventOverlap';
@@ -20,17 +21,10 @@ import { getTimeErrorMessage } from '../utils/timeValidation';
 
 interface Props {
   events: Event[];
-  setOverlappingEvents: (events: Event[]) => void;
-  setIsOverlapDialogOpen: (isOpen: boolean) => void;
   saveEvent: (event: Event | EventForm) => Promise<void>;
 }
 
-export const EventManageForm = ({
-  events,
-  setOverlappingEvents,
-  setIsOverlapDialogOpen,
-  saveEvent,
-}: Props) => {
+export const EventManageForm = ({ events, saveEvent }: Props) => {
   const {
     title,
     setTitle,
@@ -61,6 +55,7 @@ export const EventManageForm = ({
     handleEndTimeChange,
     resetForm,
   } = useEventForm();
+  const { setOverlappingEvents, setIsOverlapDialogOpen } = useDialog();
   const toast = useToast();
 
   const addOrUpdateEvent = async () => {

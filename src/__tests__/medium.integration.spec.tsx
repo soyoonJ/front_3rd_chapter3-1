@@ -1,6 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen, within, waitFor } from '@testing-library/react';
 import { UserEvent, userEvent } from '@testing-library/user-event';
+import { Provider } from 'jotai';
 import { http, HttpResponse } from 'msw';
 
 import {
@@ -15,7 +16,9 @@ import { Event } from '../types';
 const renderApp = () => {
   return render(
     <ChakraProvider>
-      <App />
+      <Provider>
+        <App />
+      </Provider>
     </ChakraProvider>
   );
 };

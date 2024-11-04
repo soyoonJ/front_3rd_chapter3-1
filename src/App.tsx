@@ -1,6 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, HStack, IconButton, Select, VStack } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
 
 import { EventManageForm } from './components/EventManageForm.tsx';
 import EventSearch from './components/EventSearch.tsx';
@@ -13,7 +12,6 @@ import { useEventForm } from './hooks/useEventForm.ts';
 import { useEventOperations } from './hooks/useEventOperations.ts';
 import { useNotifications } from './hooks/useNotifications.ts';
 import { useSearch } from './hooks/useSearch.ts';
-import { Event } from './types';
 
 function App() {
   const {
@@ -42,19 +40,10 @@ function App() {
   const { view, setView, currentDate, holidays, navigate } = useCalendarView();
   const { searchTerm, filteredEvents, setSearchTerm } = useSearch(events, currentDate, view);
 
-  const [isOverlapDialogOpen, setIsOverlapDialogOpen] = useState(false);
-  const [overlappingEvents, setOverlappingEvents] = useState<Event[]>([]);
-  const cancelRef = useRef<HTMLButtonElement>(null);
-
   return (
     <Box w="full" h="100vh" m="auto" p={5}>
       <Flex gap={6} h="full">
-        <EventManageForm
-          events={events}
-          setOverlappingEvents={setOverlappingEvents}
-          setIsOverlapDialogOpen={setIsOverlapDialogOpen}
-          saveEvent={saveEvent}
-        />
+        <EventManageForm events={events} saveEvent={saveEvent} />
 
         <VStack flex={1} spacing={5} align="stretch">
           <Heading>일정 보기</Heading>
@@ -109,12 +98,7 @@ function App() {
       </Flex>
 
       <OverlapAlertDialog
-        isOverlapDialogOpen={isOverlapDialogOpen}
-        cancelRef={cancelRef}
-        onClose={() => setIsOverlapDialogOpen(false)}
-        overlappingEvents={overlappingEvents}
-        onClick={() => {
-          setIsOverlapDialogOpen(false);
+        onSave={() => {
           saveEvent({
             id: editingEvent ? editingEvent.id : undefined,
             title,
