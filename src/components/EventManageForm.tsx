@@ -15,16 +15,12 @@ import {
 import { CATEGORIES, NOTIFICATION_OPTIONS } from '../constants/constants';
 import { useDialog } from '../hooks/useDialog';
 import { useEventForm } from '../hooks/useEventForm';
+import { useEventOperations } from '../hooks/useEventOperations';
 import { Event, EventForm, RepeatType } from '../types';
 import { findOverlappingEvents } from '../utils/eventOverlap';
 import { getTimeErrorMessage } from '../utils/timeValidation';
 
-interface Props {
-  events: Event[];
-  saveEvent: (event: Event | EventForm) => Promise<void>;
-}
-
-export const EventManageForm = ({ events, saveEvent }: Props) => {
+export const EventManageForm = () => {
   const {
     title,
     setTitle,
@@ -51,11 +47,15 @@ export const EventManageForm = ({ events, saveEvent }: Props) => {
     startTimeError,
     endTimeError,
     editingEvent,
+    setEditingEvent,
     handleStartTimeChange,
     handleEndTimeChange,
     resetForm,
   } = useEventForm();
   const { setOverlappingEvents, setIsOverlapDialogOpen } = useDialog();
+  const { events, saveEvent } = useEventOperations(Boolean(editingEvent), () =>
+    setEditingEvent(null)
+  );
   const toast = useToast();
 
   const addOrUpdateEvent = async () => {

@@ -12,16 +12,9 @@ import { useRef } from 'react';
 
 import { useDialog } from '../hooks/useDialog';
 import { useEventForm } from '../hooks/useEventForm';
-import { Event, EventForm } from '../types';
+import { useEventOperations } from '../hooks/useEventOperations';
 
-interface Props {
-  onSave: (eventData: Event | EventForm) => void;
-}
-
-export const OverlapAlertDialog = ({ onSave }: Props) => {
-  const cancelRef = useRef<HTMLButtonElement>(null);
-  const { isOverlapDialogOpen, setIsOverlapDialogOpen, overlappingEvents } = useDialog();
-
+export const OverlapAlertDialog = () => {
   const {
     title,
     date,
@@ -36,11 +29,16 @@ export const OverlapAlertDialog = ({ onSave }: Props) => {
     repeatEndDate,
     notificationTime,
     editingEvent,
+    setEditingEvent,
   } = useEventForm();
+  const { saveEvent } = useEventOperations(Boolean(editingEvent), () => setEditingEvent(null));
+
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const { isOverlapDialogOpen, setIsOverlapDialogOpen, overlappingEvents } = useDialog();
 
   const handleContinue = () => {
     setIsOverlapDialogOpen(false);
-    onSave({
+    saveEvent({
       id: editingEvent ? editingEvent.id : undefined,
       title,
       date,
