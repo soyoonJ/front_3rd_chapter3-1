@@ -10,9 +10,9 @@ import {
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 
-import { useDialog } from '../hooks/useDialog';
-import { useEventForm } from '../hooks/useEventForm';
-import { useEventOperations } from '../hooks/useEventOperations';
+import { useDialog } from '../../hooks/useDialog';
+import { useEventForm } from '../../hooks/useEventForm';
+import { useEventOperations } from '../../hooks/useEventOperations';
 
 export const OverlapAlertDialog = () => {
   const {

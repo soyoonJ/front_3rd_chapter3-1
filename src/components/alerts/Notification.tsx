@@ -1,11 +1,11 @@
 import { VStack } from '@chakra-ui/react';
 
 import { NotificationAlert } from './NotificationAlert';
-import { useEventForm } from '../hooks/useEventForm';
-import { useEventOperations } from '../hooks/useEventOperations';
-import { useNotifications } from '../hooks/useNotifications';
+import { useEventForm } from '../../hooks/useEventForm';
+import { useEventOperations } from '../../hooks/useEventOperations';
+import { useNotifications } from '../../hooks/useNotifications';
 
-const Notification = () => {
+export const Notification = () => {
   const { editingEvent, setEditingEvent } = useEventForm();
   const { events } = useEventOperations(Boolean(editingEvent), () => setEditingEvent(null));
   const { notifications, setNotifications } = useNotifications(events);
@@ -26,5 +26,3 @@ const Notification = () => {
     </>
   );
 };
-
-export default Notification;

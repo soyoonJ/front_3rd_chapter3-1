@@ -1,10 +1,10 @@
 import { Box, Flex } from '@chakra-ui/react';
 
-import { Calendar } from './components/Calendar.tsx';
-import { EventManageForm } from './components/EventManageForm.tsx';
-import EventSearch from './components/EventSearch.tsx';
-import Notification from './components/Notification.tsx';
-import { OverlapAlertDialog } from './components/OverlapAlertDialog.tsx';
+import { Notification } from './components/alerts/Notification.tsx';
+import { OverlapAlertDialog } from './components/alerts/OverlapAlertDialog.tsx';
+import { Calendar } from './components/calendarView/Calendar.tsx';
+import { EventManageForm } from './components/eventManageView/EventManageForm.tsx';
+import { EventSearch } from './components/eventSearchView/EventSearch.tsx';
 
 function App() {
   return (

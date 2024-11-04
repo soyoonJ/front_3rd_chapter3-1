@@ -1,13 +1,13 @@
 import { FormControl, FormLabel, Input, Text, VStack } from '@chakra-ui/react';
 
 import { EventItem } from './EventItem';
-import { useCalendarView } from '../hooks/useCalendarView';
-import { useEventForm } from '../hooks/useEventForm';
-import { useEventOperations } from '../hooks/useEventOperations';
-import { useNotifications } from '../hooks/useNotifications';
-import { useSearch } from '../hooks/useSearch';
+import { useCalendarView } from '../../hooks/useCalendarView';
+import { useEventForm } from '../../hooks/useEventForm';
+import { useEventOperations } from '../../hooks/useEventOperations';
+import { useNotifications } from '../../hooks/useNotifications';
+import { useSearch } from '../../hooks/useSearch';
 
-const EventSearch = () => {
+export const EventSearch = () => {
   const { editingEvent, setEditingEvent } = useEventForm();
   const { events, deleteEvent } = useEventOperations(Boolean(editingEvent), () =>
     setEditingEvent(null)
@@ -44,5 +44,3 @@ const EventSearch = () => {
     </VStack>
   );
 };
-
-export default EventSearch;

@@ -12,13 +12,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { CATEGORIES, NOTIFICATION_OPTIONS } from '../constants/constants';
-import { useDialog } from '../hooks/useDialog';
-import { useEventForm } from '../hooks/useEventForm';
-import { useEventOperations } from '../hooks/useEventOperations';
-import { Event, EventForm, RepeatType } from '../types';
-import { findOverlappingEvents } from '../utils/eventOverlap';
-import { getTimeErrorMessage } from '../utils/timeValidation';
+import { CATEGORIES, NOTIFICATION_OPTIONS } from '../../constants/constants';
+import { useDialog } from '../../hooks/useDialog';
+import { useEventForm } from '../../hooks/useEventForm';
+import { useEventOperations } from '../../hooks/useEventOperations';
+import { Event, EventForm, RepeatType } from '../../types';
+import { findOverlappingEvents } from '../../utils/eventOverlap';
+import { getTimeErrorMessage } from '../../utils/timeValidation';
 
 export const EventManageForm = () => {
   const {

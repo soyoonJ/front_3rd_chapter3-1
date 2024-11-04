@@ -3,11 +3,11 @@ import { Heading, HStack, IconButton, Select, VStack } from '@chakra-ui/react';
 
 import { MonthView } from './MonthView';
 import { WeekView } from './WeekView';
-import { useCalendarView } from '../hooks/useCalendarView';
-import { useEventForm } from '../hooks/useEventForm';
-import { useEventOperations } from '../hooks/useEventOperations';
-import { useNotifications } from '../hooks/useNotifications';
-import { useSearch } from '../hooks/useSearch';
+import { useCalendarView } from '../../hooks/useCalendarView';
+import { useEventForm } from '../../hooks/useEventForm';
+import { useEventOperations } from '../../hooks/useEventOperations';
+import { useNotifications } from '../../hooks/useNotifications';
+import { useSearch } from '../../hooks/useSearch';
 
 export const Calendar = () => {
   const { editingEvent, setEditingEvent } = useEventForm();
