@@ -1,26 +1,23 @@
 import { FormControl, FormLabel, Input, Text, VStack } from '@chakra-ui/react';
-import { Dispatch, SetStateAction } from 'react';
 
 import { EventItem } from './EventItem';
+import { useCalendarView } from '../hooks/useCalendarView';
+import { useEventForm } from '../hooks/useEventForm';
+import { useNotifications } from '../hooks/useNotifications';
+import { useSearch } from '../hooks/useSearch';
 import { Event } from '../types';
 
 interface Props {
-  searchTerm: string;
-  setSearchTerm: Dispatch<SetStateAction<string>>;
-  filteredEvents: Event[];
-  notifiedEvents: string[];
-  editEvent: (event: Event) => void;
+  events: Event[];
   deleteEvent: (eventId: string) => void;
 }
 
-const EventSearch = ({
-  searchTerm,
-  setSearchTerm,
-  filteredEvents,
-  notifiedEvents,
-  editEvent,
-  deleteEvent,
-}: Props) => {
+const EventSearch = ({ events, deleteEvent }: Props) => {
+  const { view, currentDate } = useCalendarView();
+  const { searchTerm, filteredEvents, setSearchTerm } = useSearch(events, currentDate, view);
+  const { editEvent } = useEventForm();
+  const { notifiedEvents } = useNotifications(events);
+
   return (
     <VStack data-testid="event-list" w="500px" h="full" overflowY="auto">
       <FormControl>
