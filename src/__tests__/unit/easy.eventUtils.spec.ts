@@ -255,7 +255,10 @@ describe('getFilteredEvents', () => {
     expect(filteredEvents).toHaveLength(2);
   });
 
-  it('주간 뷰에서 전월달의 이벤트가 현재 날짜와 같은 주에 있는 경우 함께 필터링된다', () => {
+  it.each([
+    { desc: '전월 달', date: '2024-07-01' },
+    { desc: '다음 달', date: '2024-06-30' },
+  ])('주간 뷰에서 $desc의 이벤트가 현재 날짜와 같은 주에 있는 경우 함께 필터링된다', ({ date }) => {
     const events: Event[] = [
       {
         id: '1',
@@ -295,12 +298,38 @@ describe('getFilteredEvents', () => {
       },
     ];
     const searchTerm = '';
-    const currentDate = new Date('2024-07-01');
+    const currentDate = new Date(date);
     const view = 'week';
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
     expect(filteredEvents).toHaveLength(2);
+    expect(filteredEvents).toEqual([
+      {
+        id: '1',
+        title: '이벤트 1',
+        date: '2024-06-30',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '이벤트 1입니다.',
+        location: '서울',
+        category: '카테고리 1',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+      {
+        id: '2',
+        title: '이벤트 2',
+        date: '2024-07-01',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '이벤트 2입니다.',
+        location: '서울',
+        category: '카테고리 2',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+    ]);
   });
 
   it('빈 이벤트 리스트에 대해 빈 배열을 반환한다', () => {
