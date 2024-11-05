@@ -5,6 +5,7 @@ import { Provider } from 'jotai';
 import { http, HttpResponse } from 'msw';
 
 import { setupMockHandler } from '../__mocks__/handlersUtils';
+import { events } from '../__mocks__/response/events.json' assert { type: 'json' };
 import App from '../App';
 import { server } from '../setupTests';
 import { Event } from '../types';
@@ -154,6 +155,7 @@ describe('일정 뷰', () => {
 
   it('월별 뷰에 일정이 없으면, 일정이 표시되지 않아야 한다.', async () => {
     vi.setSystemTime(new Date('2024-10-01'));
+    setupMockHandler(events as Event[]);
     renderApp();
 
     await user.selectOptions(screen.getByLabelText(/view/), 'month');
@@ -163,6 +165,7 @@ describe('일정 뷰', () => {
   });
 
   it('월별 뷰에 일정이 정확히 표시되는지 확인한다', async () => {
+    setupMockHandler(events as Event[]);
     renderApp();
 
     await user.selectOptions(screen.getByLabelText(/view/), 'month');
@@ -185,6 +188,7 @@ describe('일정 뷰', () => {
 
 describe('검색 기능', () => {
   it('검색 결과가 없으면, "검색 결과가 없습니다."가 표시되어야 한다.', async () => {
+    setupMockHandler(events as Event[]);
     renderApp();
 
     const eventList = screen.getByTestId('event-list');
@@ -245,6 +249,7 @@ describe('검색 기능', () => {
   });
 
   it('검색어를 지우면 모든 일정이 다시 표시되어야 한다', async () => {
+    setupMockHandler(events as Event[]);
     renderApp();
 
     const eventList = screen.getByTestId('event-list');

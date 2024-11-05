@@ -29,6 +29,12 @@ export const setupMockHandler = (initEvents = [] as Event[]) => {
       const updatedEvent = await request.json();
       events = events.map((event) => (event.id === id ? (updatedEvent as Event) : event));
 
+      const eventIndex = events.findIndex((event) => event.id === id);
+
+      if (eventIndex === -1) {
+        return HttpResponse.json({ message: 'Event not found' }, { status: 404 });
+      }
+
       return HttpResponse.json(updatedEvent);
     }),
 

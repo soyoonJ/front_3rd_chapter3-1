@@ -2,11 +2,13 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 
 import { setupMockHandler } from '../../__mocks__/handlersUtils.ts';
+import { events } from '../../__mocks__/response/events.json' assert { type: 'json' };
 import { useEventOperations } from '../../hooks/useEventOperations.ts';
 import { server } from '../../setupTests.ts';
 import { Event } from '../../types.ts';
 
 it('저장되어있는 초기 이벤트 데이터를 적절하게 불러온다', async () => {
+  setupMockHandler(events as Event[]);
   const { result } = renderHook(() => useEventOperations(false, () => {}));
 
   await waitFor(() => {
