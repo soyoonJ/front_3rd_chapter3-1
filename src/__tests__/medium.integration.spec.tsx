@@ -4,11 +4,7 @@ import { UserEvent, userEvent } from '@testing-library/user-event';
 import { Provider } from 'jotai';
 import { http, HttpResponse } from 'msw';
 
-import {
-  setupMockHandlerCreation,
-  setupMockHandlerDeletion,
-  setupMockHandlerUpdating,
-} from '../__mocks__/handlersUtils';
+import { setupMockHandler } from '../__mocks__/handlersUtils';
 import App from '../App';
 import { server } from '../setupTests';
 import { Event } from '../types';
@@ -30,7 +26,7 @@ beforeEach(() => {
 
 describe('일정 CRUD 및 기본 기능', () => {
   it('입력한 새로운 일정 정보에 맞춰 모든 필드가 이벤트 리스트에 정확히 저장된다.', async () => {
-    setupMockHandlerCreation();
+    setupMockHandler();
     renderApp();
 
     // ! HINT. event를 추가 제거하고 저장하는 로직을 잘 살펴보고, 만약 그대로 구현한다면 어떤 문제가 있을 지 고민해보세요.
@@ -69,7 +65,7 @@ describe('일정 CRUD 및 기본 기능', () => {
         notificationTime: 0,
       },
     ];
-    setupMockHandlerUpdating(initEvents);
+    setupMockHandler(initEvents);
     renderApp();
 
     const eventList = await screen.findByTestId('event-list');
@@ -119,7 +115,7 @@ describe('일정 CRUD 및 기본 기능', () => {
         notificationTime: 0,
       },
     ];
-    setupMockHandlerDeletion(initEvents);
+    setupMockHandler(initEvents);
     renderApp();
 
     const eventList = await screen.findByTestId('event-list');
@@ -283,7 +279,7 @@ describe('일정 충돌', () => {
         notificationTime: 0,
       },
     ];
-    setupMockHandlerCreation(initEvents);
+    setupMockHandler(initEvents);
     renderApp();
 
     await user.type(screen.getByLabelText(/제목/), '충돌 이벤트');
@@ -326,7 +322,7 @@ describe('일정 충돌', () => {
         notificationTime: 0,
       },
     ];
-    setupMockHandlerUpdating(initEvents);
+    setupMockHandler(initEvents);
     renderApp();
 
     const eventList = await screen.findByTestId('event-list');
@@ -362,7 +358,7 @@ it('notificationTime을 10으로 하면 지정 시간 10분 전 알람 텍스트
       notificationTime: 10,
     },
   ];
-  setupMockHandlerCreation(initEvents);
+  setupMockHandler(initEvents);
   renderApp();
 
   await waitFor(() => {

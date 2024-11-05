@@ -1,11 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 
-import {
-  setupMockHandlerCreation,
-  setupMockHandlerDeletion,
-  setupMockHandlerUpdating,
-} from '../../__mocks__/handlersUtils.ts';
+import { setupMockHandler } from '../../__mocks__/handlersUtils.ts';
 import { useEventOperations } from '../../hooks/useEventOperations.ts';
 import { server } from '../../setupTests.ts';
 import { Event } from '../../types.ts';
@@ -59,7 +55,7 @@ it('정의된 이벤트 정보를 기준으로 적절하게 저장이 된다', a
       notificationTime: 10,
     },
   ];
-  setupMockHandlerCreation(initEvents as Event[]);
+  setupMockHandler(initEvents as Event[]);
 
   const { result } = renderHook(() => useEventOperations(false, () => {}));
 
@@ -98,7 +94,7 @@ it("새로 정의된 'title', 'endTime' 기준으로 적절하게 일정이 업�
       notificationTime: 10,
     },
   ];
-  setupMockHandlerUpdating(initEvents as Event[]);
+  setupMockHandler(initEvents as Event[]);
 
   const { result } = renderHook(() => useEventOperations(true, () => {}));
 
@@ -141,7 +137,7 @@ it('존재하는 이벤트 삭제 시 에러없이 아이템이 삭제된다.', 
       notificationTime: 10,
     },
   ];
-  setupMockHandlerDeletion(initEvents as Event[]);
+  setupMockHandler(initEvents as Event[]);
 
   const { result } = renderHook(() => useEventOperations(false, () => {}));
 
