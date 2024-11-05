@@ -76,7 +76,18 @@ it('정의된 이벤트 정보를 기준으로 적절하게 저장이 된다', a
   });
 
   expect(result.current.events).toHaveLength(3);
-  expect(result.current.events[2]).toEqual({ ...newEvent, id: '3' });
+  expect(result.current.events[2]).toEqual({
+    id: '3',
+    title: '커피 한 잔 마시기 new',
+    startTime: '11:00',
+    endTime: '12:00',
+    description: '커피 한 잔 마시기',
+    location: '카페',
+    category: '기타',
+    date: '2024-11-20',
+    repeat: { type: 'none', interval: 0 },
+    notificationTime: 0,
+  });
 });
 
 it("새로 정의된 'title', 'endTime' 기준으로 적절하게 일정이 업데이트 된다", async () => {

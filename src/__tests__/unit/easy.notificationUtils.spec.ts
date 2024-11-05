@@ -19,7 +19,20 @@ describe('getUpcomingEvents', () => {
 
   it('알림 시간이 정확히 도래한 이벤트를 반환한다', () => {
     const upcomingEvents = getUpcomingEvents(events, new Date(2024, 10, 3, 8), []);
-    expect(upcomingEvents).toEqual([events[0]]);
+    expect(upcomingEvents).toEqual([
+      {
+        id: '1',
+        title: '이벤트 1',
+        date: '2024-11-03',
+        startTime: '09:00',
+        endTime: '10:00',
+        description: '',
+        location: '',
+        category: '',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 60,
+      },
+    ]);
   });
 
   it('이미 알림이 간 이벤트는 제외한다', () => {
