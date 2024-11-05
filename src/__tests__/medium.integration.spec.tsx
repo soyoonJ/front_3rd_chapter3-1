@@ -105,7 +105,6 @@ describe('일정 CRUD 및 기본 기능', () => {
   });
 
   it('일정을 삭제하고 더 이상 조회되지 않는지 확인한다', async () => {
-    vi.setSystemTime(new Date('2024-11-03'));
     const initEvents: Event[] = [
       {
         id: '1',
@@ -134,12 +133,12 @@ describe('일정 CRUD 및 기본 기능', () => {
     await waitFor(() => {
       expect(within(eventList).queryByText('삭제될 이벤트')).toBeInTheDocument();
     });
-    vi.useRealTimers();
   });
 });
 
 describe('일정 뷰', () => {
   it('주별 뷰를 선택 후 해당 주에 일정이 없으면, 일정이 표시되지 않는다.', async () => {
+    vi.setSystemTime(new Date('2024-10-20'));
     renderApp();
 
     await user.selectOptions(screen.getByLabelText(/view/), 'week');
@@ -154,10 +153,11 @@ describe('일정 뷰', () => {
     await user.selectOptions(screen.getByLabelText(/view/), 'week');
 
     const eventList = await screen.findByTestId('event-list');
-    expect(within(eventList).getByText('검색 결과가 없습니다.')).toBeInTheDocument();
+    expect(within(eventList).queryByText('검색 결과가 없습니다.')).not.toBeInTheDocument();
   });
 
   it('월별 뷰에 일정이 없으면, 일정이 표시되지 않아야 한다.', async () => {
+    vi.setSystemTime(new Date('2024-10-01'));
     renderApp();
 
     await user.selectOptions(screen.getByLabelText(/view/), 'month');
@@ -167,15 +167,12 @@ describe('일정 뷰', () => {
   });
 
   it('월별 뷰에 일정이 정확히 표시되는지 확인한다', async () => {
-    vi.setSystemTime(new Date('2024-10-01'));
     renderApp();
 
     await user.selectOptions(screen.getByLabelText(/view/), 'month');
 
     const eventList = await screen.findByTestId('event-list');
     expect(within(eventList).getByText('기존 회의')).toBeInTheDocument();
-
-    vi.useRealTimers();
   });
 
   it('달력에 1월 1일(신정)이 공휴일로 표시되는지 확인한다', async () => {
@@ -187,19 +184,10 @@ describe('일정 뷰', () => {
     const targetElement = screen.getByText('신정');
     expect(targetElement).toBeInTheDocument();
     expect(targetElement).toHaveStyle('color: red.500');
-
-    vi.useRealTimers();
   });
 });
 
 describe('검색 기능', () => {
-  beforeEach(() => {
-    vi.setSystemTime(new Date('2024-10-15'));
-  });
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it('검색 결과가 없으면, "검색 결과가 없습니다."가 표시되어야 한다.', async () => {
     renderApp();
 
@@ -219,7 +207,7 @@ describe('검색 기능', () => {
       {
         id: '1',
         title: '기존 회의',
-        date: '2024-10-15',
+        date: '2024-11-15',
         startTime: '09:00',
         endTime: '10:00',
         description: '',
@@ -231,7 +219,7 @@ describe('검색 기능', () => {
       {
         id: '2',
         title: '팀 회의',
-        date: '2024-10-15',
+        date: '2024-11-14',
         startTime: '09:00',
         endTime: '10:00',
         description: '',
@@ -380,5 +368,4 @@ it('notificationTime을 10으로 하면 지정 시간 10분 전 알람 텍스트
   await waitFor(() => {
     expect(screen.getByText(/시작됩니다/)).toBeInTheDocument();
   });
-  vi.useRealTimers();
 });

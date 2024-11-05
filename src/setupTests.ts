@@ -11,12 +11,14 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
+  vi.setSystemTime(new Date('2024-11-05'));
   expect.hasAssertions();
 });
 
 afterEach(() => {
   server.resetHandlers();
   vi.clearAllMocks();
+  vi.useRealTimers();
 });
 
 afterAll(() => {

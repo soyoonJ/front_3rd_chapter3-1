@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 
 import {
@@ -13,24 +13,22 @@ import { Event } from '../../types.ts';
 it('저장되어있는 초기 이벤트 데이터를 적절하게 불러온다', async () => {
   const { result } = renderHook(() => useEventOperations(false, () => {}));
 
-  await act(async () => {
-    await result.current.fetchEvents();
+  await waitFor(() => {
+    expect(result.current.events).toEqual([
+      {
+        id: '1',
+        title: '기존 회의',
+        date: '2024-11-06',
+        startTime: '09:00',
+        endTime: '10:00',
+        description: '기존 팀 미팅',
+        location: '회의실 B',
+        category: '업무',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+    ]);
   });
-
-  expect(result.current.events).toEqual([
-    {
-      id: '1',
-      title: '기존 회의',
-      date: '2024-10-15',
-      startTime: '09:00',
-      endTime: '10:00',
-      description: '기존 팀 미팅',
-      location: '회의실 B',
-      category: '업무',
-      repeat: { type: 'none', interval: 0 },
-      notificationTime: 10,
-    },
-  ]);
 });
 
 it('정의된 이벤트 정보를 기준으로 적절하게 저장이 된다', async () => {
@@ -39,7 +37,7 @@ it('정의된 이벤트 정보를 기준으로 적절하게 저장이 된다', a
     {
       id: '1',
       title: '기존 회의',
-      date: '2024-10-15',
+      date: '2024-11-15',
       startTime: '09:00',
       endTime: '10:00',
       description: '기존 팀 미팅',
@@ -51,7 +49,7 @@ it('정의된 이벤트 정보를 기준으로 적절하게 저장이 된다', a
     {
       id: '2',
       title: '기존 회의',
-      date: '2024-10-15',
+      date: '2024-11-15',
       startTime: '09:00',
       endTime: '10:00',
       description: '기존 팀 미팅',
@@ -72,17 +70,13 @@ it('정의된 이벤트 정보를 기준으로 적절하게 저장이 된다', a
     description: '커피 한 잔 마시기',
     location: '카페',
     category: '기타',
-    date: '2021-10-20',
+    date: '2024-11-20',
     repeat: { type: 'none', interval: 0 },
     notificationTime: 0,
   };
 
-  await act(async () => {
-    await result.current.saveEvent(newEvent as Event);
-  });
-
-  await act(async () => {
-    await result.current.fetchEvents();
+  await act(() => {
+    result.current.saveEvent(newEvent as Event);
   });
 
   expect(result.current.events).toHaveLength(3);
@@ -137,7 +131,7 @@ it('존재하는 이벤트 삭제 시 에러없이 아이템이 삭제된다.', 
     {
       id: '1',
       title: '기존 회의',
-      date: '2024-10-15',
+      date: '2024-11-15',
       startTime: '09:00',
       endTime: '10:00',
       description: '기존 팀 미팅',
@@ -206,7 +200,7 @@ it("존재하지 않는 이벤트 수정 시 '일정 저장 실패'라는 토스
   const updatedEvent = {
     id: '2',
     title: '기존 회의 updated',
-    date: '2024-10-15',
+    date: '2024-11-15',
     startTime: '09:00',
     endTime: '11:00',
     description: '기존 팀 미팅',

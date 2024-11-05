@@ -3,14 +3,11 @@ import { act, renderHook } from '@testing-library/react';
 import { useCalendarView } from '../../hooks/useCalendarView.ts';
 import { assertDate } from '../utils.ts';
 
-afterAll(() => {
-  vi.restoreAllMocks();
+beforeEach(() => {
+  vi.setSystemTime('2024-10-01'); // 화요일
 });
 
 describe('초기 상태', () => {
-  const mockDate = new Date('2024-10-01'); // 화요일
-  vi.setSystemTime(mockDate);
-
   it('view는 "month"이어야 한다', () => {
     const { result } = renderHook(() => useCalendarView());
 
