@@ -32,7 +32,7 @@ describe('getDaysInMonth', () => {
     expect(getDaysInMonth(2024, 13)).toBe(31);
   });
 
-  test.each([
+  it.each([
     { year: 2024, month: 13, expected: 31 },
     { year: 2024, month: 14, expected: 28 },
     { year: 2024, month: 15, expected: 31 },
