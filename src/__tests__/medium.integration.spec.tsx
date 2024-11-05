@@ -362,6 +362,6 @@ it('notificationTime을 10으로 하면 지정 시간 10분 전 알람 텍스트
   renderApp();
 
   await waitFor(() => {
-    expect(screen.getByText(/시작됩니다/)).toBeInTheDocument();
+    expect(screen.getAllByText('10분 후 알람 이벤트 일정이 시작됩니다.')[0]).toBeInTheDocument();
   });
 });
