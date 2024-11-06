@@ -229,11 +229,7 @@ describe('검색 기능', () => {
         notificationTime: 0,
       },
     ];
-    server.use(
-      http.get('/api/events', () => {
-        return HttpResponse.json({ events: initEvents });
-      })
-    );
+    setupMockHandler(initEvents);
     renderApp();
 
     const eventList = screen.getByTestId('event-list');
