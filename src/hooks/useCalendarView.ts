@@ -27,11 +27,11 @@ export const useCalendarView = () => {
 
   useEffect(() => {
     setCurrentDate(new Date());
-  }, []);
+  }, [setCurrentDate]);
 
   useEffect(() => {
     setHolidays(fetchHolidays(currentDate));
-  }, [currentDate]);
+  }, [currentDate, setHolidays]);
 
   return { view, setView, currentDate, setCurrentDate, holidays, navigate };
 };
