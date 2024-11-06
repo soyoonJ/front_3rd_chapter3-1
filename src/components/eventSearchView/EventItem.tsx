@@ -2,16 +2,23 @@ import { BellIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
 
 import { NOTIFICATION_OPTIONS } from '../../constants/constants';
+import { useEventForm } from '../../hooks/useEventForm';
+import { useEventOperations } from '../../hooks/useEventOperations';
+import { useNotifications } from '../../hooks/useNotifications';
 import { Event } from '../../types';
 
 interface Props {
   event: Event;
-  notifiedEvents: string[];
-  onEdit: () => void;
-  onDelete: () => void;
 }
 
-export const EventItem = ({ event, notifiedEvents, onEdit, onDelete }: Props) => {
+export const EventItem = ({ event }: Props) => {
+  const { editingEvent, setEditingEvent } = useEventForm();
+  const { events, deleteEvent } = useEventOperations(Boolean(editingEvent), () =>
+    setEditingEvent(null)
+  );
+  const { notifiedEvents } = useNotifications(events);
+  const { editEvent } = useEventForm();
+
   return (
     <Box key={event.id} borderWidth={1} borderRadius="lg" p={3} width="100%">
       <HStack justifyContent="space-between">
@@ -49,8 +56,16 @@ export const EventItem = ({ event, notifiedEvents, onEdit, onDelete }: Props) =>
           </Text>
         </VStack>
         <HStack>
-          <IconButton aria-label="Edit event" icon={<EditIcon />} onClick={onEdit} />
-          <IconButton aria-label="Delete event" icon={<DeleteIcon />} onClick={onDelete} />
+          <IconButton
+            aria-label="Edit event"
+            icon={<EditIcon />}
+            onClick={() => editEvent(event)}
+          />
+          <IconButton
+            aria-label="Delete event"
+            icon={<DeleteIcon />}
+            onClick={() => deleteEvent(event.id)}
+          />
         </HStack>
       </HStack>
     </Box>
