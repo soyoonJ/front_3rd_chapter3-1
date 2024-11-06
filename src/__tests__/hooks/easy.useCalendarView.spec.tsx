@@ -1,10 +1,10 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 
 import { useCalendarView } from '../../hooks/useCalendarView.ts';
 import { assertDate } from '../utils.ts';
 
 beforeEach(() => {
-  vi.setSystemTime('2024-10-01'); // 화요일
+  vi.setSystemTime(new Date('2024-10-01')); // 화요일
 });
 
 describe('초기 상태', () => {
@@ -39,7 +39,7 @@ it("view를 'week'으로 변경 시 적절하게 반영된다", () => {
   expect(result.current.view).toBe('week');
 });
 
-it("주간 뷰에서 다음으로 navigate시 7일 후 '2024-10-08' 날짜로 지정이 된다", () => {
+it("주간 뷰에서 다음으로 navigate시 7일 후 '2024-10-08' 날짜로 지정이 된다", async () => {
   const { result } = renderHook(() => useCalendarView());
 
   act(() => {
@@ -49,7 +49,7 @@ it("주간 뷰에서 다음으로 navigate시 7일 후 '2024-10-08' 날짜로 �
     result.current.navigate('next');
   });
 
-  assertDate(result.current.currentDate, new Date('2024-10-08'));
+  await waitFor(() => assertDate(result.current.currentDate, new Date('2024-10-08')));
 });
 
 it("주간 뷰에서 이전으로 navigate시 7일 전 '2024-09-24' 날짜로 지정이 된다", () => {
@@ -69,6 +69,9 @@ it("월간 뷰에서 다음으로 navigate시 한 달 후 '2024-11-01' 날짜여
   const { result } = renderHook(() => useCalendarView());
 
   act(() => {
+    result.current.setView('month');
+  });
+  act(() => {
     result.current.navigate('next');
   });
 
@@ -78,6 +81,9 @@ it("월간 뷰에서 다음으로 navigate시 한 달 후 '2024-11-01' 날짜여
 it("월간 뷰에서 이전으로 navigate시 한 달 전 '2024-09-01' 날짜여야 한다", () => {
   const { result } = renderHook(() => useCalendarView());
 
+  act(() => {
+    result.current.setView('month');
+  });
   act(() => {
     result.current.navigate('prev');
   });

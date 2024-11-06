@@ -2,12 +2,10 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen, within, waitFor } from '@testing-library/react';
 import { UserEvent, userEvent } from '@testing-library/user-event';
 import { Provider } from 'jotai';
-import { http, HttpResponse } from 'msw';
 
 import { setupMockHandler } from '../__mocks__/handlersUtils';
 import { events } from '../__mocks__/response/events.json' assert { type: 'json' };
 import App from '../App';
-import { server } from '../setupTests';
 import { Event } from '../types';
 
 const renderApp = () => {
@@ -56,7 +54,7 @@ describe('일정 CRUD 및 기본 기능', () => {
       {
         id: '1',
         title: '수정될 이벤트',
-        date: '2024-11-03',
+        date: '2024-11-05',
         startTime: '09:00',
         endTime: '10:00',
         description: '',
@@ -70,7 +68,7 @@ describe('일정 CRUD 및 기본 기능', () => {
     renderApp();
 
     const eventList = await screen.findByTestId('event-list');
-    expect(within(eventList).getByText('수정될 이벤트')).toBeInTheDocument();
+    expect(await within(eventList).findByText('수정될 이벤트')).toBeInTheDocument();
 
     const editButton = await within(eventList).findByRole('button', { name: 'Edit event' });
     await user.click(editButton);
@@ -78,7 +76,7 @@ describe('일정 CRUD 및 기본 기능', () => {
     await user.clear(screen.getByLabelText(/제목/));
     await user.type(screen.getByLabelText(/제목/), '수정된 팀 회의 제목');
     await user.clear(screen.getByLabelText(/날짜/));
-    await user.type(screen.getByLabelText(/날짜/), '2024-11-04');
+    await user.type(screen.getByLabelText(/날짜/), '2024-11-06');
     await user.clear(screen.getByLabelText(/시작 시간/));
     await user.type(screen.getByLabelText(/시작 시간/), '11:00');
     await user.clear(screen.getByLabelText(/종료 시간/));
@@ -93,7 +91,7 @@ describe('일정 CRUD 및 기본 기능', () => {
 
     const updatedEventList = await screen.findByTestId('event-list');
     expect(within(updatedEventList).getByText('수정된 팀 회의 제목')).toBeInTheDocument();
-    expect(within(updatedEventList).getByText('2024-11-04')).toBeInTheDocument();
+    expect(within(updatedEventList).getByText('2024-11-06')).toBeInTheDocument();
     expect(within(updatedEventList).getByText(/11:00/)).toBeInTheDocument();
     expect(within(updatedEventList).getByText(/12:00/)).toBeInTheDocument();
     expect(within(updatedEventList).getByText('수정된 팀 회의 설명')).toBeInTheDocument();
@@ -136,6 +134,7 @@ describe('일정 CRUD 및 기본 기능', () => {
 describe('일정 뷰', () => {
   it('주별 뷰를 선택 후 해당 주에 일정이 없으면, 일정이 표시되지 않는다.', async () => {
     vi.setSystemTime(new Date('2024-10-20'));
+    setupMockHandler(events as Event[]);
     renderApp();
 
     await user.selectOptions(screen.getByLabelText(/view/), 'week');
@@ -327,7 +326,7 @@ describe('일정 충돌', () => {
     renderApp();
 
     const eventList = await screen.findByTestId('event-list');
-    expect(within(eventList).getByText('충돌 이벤트')).toBeInTheDocument();
+    expect(await within(eventList).findByText('충돌 이벤트')).toBeInTheDocument();
 
     const editButton = await within(eventList).findAllByRole('button', { name: 'Edit event' });
     await user.click(editButton[0]);

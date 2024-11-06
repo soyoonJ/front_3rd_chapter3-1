@@ -1,17 +1,19 @@
 import { atom, useAtom } from 'jotai';
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { Event } from '../types';
 import { getFilteredEvents } from '../utils/eventUtils';
 
 const searchTermAtom = atom('');
+const filteredEventsAtom = atom<Event[]>([]);
 
 export const useSearch = (events: Event[], currentDate: Date, view: 'week' | 'month') => {
   const [searchTerm, setSearchTerm] = useAtom(searchTermAtom);
+  const [filteredEvents, setFilteredEvents] = useAtom(filteredEventsAtom);
 
-  const filteredEvents = useMemo(() => {
-    return getFilteredEvents(events, searchTerm, currentDate, view);
-  }, [events, searchTerm, currentDate, view]);
+  useEffect(() => {
+    setFilteredEvents(getFilteredEvents(events, searchTerm, currentDate, view));
+  }, [setFilteredEvents, events, searchTerm, currentDate, view]);
 
   return {
     searchTerm,
