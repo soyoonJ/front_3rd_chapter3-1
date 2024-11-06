@@ -108,7 +108,7 @@ export const EventManageForm = () => {
 
   return (
     <VStack w="400px" spacing={5} align="stretch">
-      <Heading>{editingEvent ? '일정 수정' : '일정 추가'}</Heading>
+      <Heading data-testid="event-form-title">{editingEvent ? '일정 수정' : '일정 추가'}</Heading>
 
       <FormControl>
         <FormLabel>제목</FormLabel>

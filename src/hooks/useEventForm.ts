@@ -19,7 +19,7 @@ const repeatIntervalAtom = atom(1);
 const repeatEndDateAtom = atom('');
 const notificationTimeAtom = atom(10);
 
-const editingEventAtom = atom<Event | null>(null);
+export const editingEventAtom = atom<Event | null>(null);
 
 export const useEventForm = () => {
   const [title, setTitle] = useAtom(titleAtom);
