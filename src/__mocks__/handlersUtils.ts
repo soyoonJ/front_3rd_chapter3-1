@@ -41,9 +41,12 @@ export const setupMockHandler = (initEvents = [] as Event[]) => {
     http.delete('/api/events/:id', ({ params }) => {
       const { id } = params;
 
-      events = events.filter((event) => event.id !== id);
+      events.splice(
+        events.findIndex((event) => event.id === id),
+        1
+      );
 
-      return HttpResponse.json(null, { status: 204 });
+      return new HttpResponse(null, { status: 204 });
     })
   );
 };

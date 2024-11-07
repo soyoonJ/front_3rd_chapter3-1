@@ -128,12 +128,8 @@ it("새로 정의된 'title', 'endTime' 기준으로 적절하게 일정이 업�
     notificationTime: 10,
   };
 
-  await act(async () => {
-    await result.current.saveEvent(updatedEvent as Event);
-  });
-
-  await act(async () => {
-    await result.current.fetchEvents();
+  await act(() => {
+    result.current.saveEvent(updatedEvent as Event);
   });
 
   expect(result.current.events).toEqual([updatedEvent]);
@@ -158,12 +154,8 @@ it('존재하는 이벤트 삭제 시 에러없이 아이템이 삭제된다.', 
 
   const { result } = renderHook(() => useEventOperations(false, () => {}), { wrapper });
 
-  await act(async () => {
-    await result.current.deleteEvent('1');
-  });
-
-  await act(async () => {
-    await result.current.fetchEvents();
+  await act(() => {
+    result.current.deleteEvent('1');
   });
 
   expect(result.current.events).toEqual([]);
@@ -223,8 +215,8 @@ it("존재하지 않는 이벤트 수정 시 '일정 저장 실패'라는 토스
     notificationTime: 10,
   };
 
-  await act(async () => {
-    await result.current.saveEvent(updatedEvent as Event);
+  await act(() => {
+    result.current.saveEvent(updatedEvent as Event);
   });
 
   expect(toastMock).toHaveBeenCalledWith({
@@ -244,8 +236,8 @@ it("네트워크 오류 시 '일정 삭제 실패'라는 텍스트가 노출되�
 
   const { result } = renderHook(() => useEventOperations(false, () => {}), { wrapper });
 
-  await act(async () => {
-    await result.current.deleteEvent('1');
+  await act(() => {
+    result.current.deleteEvent('1');
   });
 
   expect(toastMock).toHaveBeenCalledWith({

@@ -89,14 +89,13 @@ describe('일정 CRUD 및 기본 기능', () => {
 
     await user.click(screen.getByRole('button', { name: /일정 수정/ }));
 
-    const updatedEventList = await screen.findByTestId('event-list');
-    expect(within(updatedEventList).getByText('수정된 팀 회의 제목')).toBeInTheDocument();
-    expect(within(updatedEventList).getByText('2024-11-06')).toBeInTheDocument();
-    expect(within(updatedEventList).getByText(/11:00/)).toBeInTheDocument();
-    expect(within(updatedEventList).getByText(/12:00/)).toBeInTheDocument();
-    expect(within(updatedEventList).getByText('수정된 팀 회의 설명')).toBeInTheDocument();
-    expect(within(updatedEventList).getByText('수정된 회의실')).toBeInTheDocument();
-    expect(within(updatedEventList).getByText(/개인/)).toBeInTheDocument();
+    expect(within(eventList).getByText('수정된 팀 회의 제목')).toBeInTheDocument();
+    expect(within(eventList).getByText('2024-11-06')).toBeInTheDocument();
+    expect(within(eventList).getByText(/11:00/)).toBeInTheDocument();
+    expect(within(eventList).getByText(/12:00/)).toBeInTheDocument();
+    expect(within(eventList).getByText('수정된 팀 회의 설명')).toBeInTheDocument();
+    expect(within(eventList).getByText('수정된 회의실')).toBeInTheDocument();
+    expect(within(eventList).getByText(/개인/)).toBeInTheDocument();
   });
 
   it('일정을 삭제하고 더 이상 조회되지 않는지 확인한다', async () => {
@@ -118,16 +117,12 @@ describe('일정 CRUD 및 기본 기능', () => {
     renderApp();
 
     const eventList = await screen.findByTestId('event-list');
-    await waitFor(() => {
-      expect(within(eventList).getByText('삭제될 이벤트')).toBeInTheDocument();
-    });
+    expect(await within(eventList).findByText('삭제될 이벤트')).toBeInTheDocument();
 
     const deleteButton = await within(eventList).findAllByRole('button', { name: 'Delete event' });
     await user.click(deleteButton[0]);
 
-    await waitFor(() => {
-      expect(within(eventList).queryByText('삭제될 이벤트')).toBeInTheDocument();
-    });
+    expect(within(eventList).queryByText('삭제될 이벤트')).not.toBeInTheDocument();
   });
 });
 

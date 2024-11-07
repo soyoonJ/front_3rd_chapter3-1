@@ -1,4 +1,4 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { Provider } from 'jotai';
 import React from 'react';
 
@@ -53,7 +53,7 @@ it("주간 뷰에서 다음으로 navigate시 7일 후 '2024-10-08' 날짜로 �
     result.current.navigate('next');
   });
 
-  await waitFor(() => assertDate(result.current.currentDate, new Date('2024-10-08')));
+  assertDate(result.current.currentDate, new Date('2024-10-08'));
 });
 
 it("주간 뷰에서 이전으로 navigate시 7일 전 '2024-09-24' 날짜로 지정이 된다", () => {
