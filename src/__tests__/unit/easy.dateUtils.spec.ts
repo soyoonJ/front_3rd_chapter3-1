@@ -192,15 +192,15 @@ describe('getEventsForDay', () => {
   });
 
   it('해당 날짜에 이벤트가 없을 경우 빈 배열을 반환한다', () => {
-    expect(getEventsForDay(events, 3)).toEqual([]);
+    expect(getEventsForDay(events, 3)).toHaveLength(0);
   });
 
   it('날짜가 0일 경우 빈 배열을 반환한다', () => {
-    expect(getEventsForDay(events, 0)).toEqual([]);
+    expect(getEventsForDay(events, 0)).toHaveLength(0);
   });
 
   it('날짜가 32일 이상인 경우 빈 배열을 반환한다', () => {
-    expect(getEventsForDay(events, 32)).toEqual([]);
+    expect(getEventsForDay(events, 32)).toHaveLength(0);
   });
 });
 

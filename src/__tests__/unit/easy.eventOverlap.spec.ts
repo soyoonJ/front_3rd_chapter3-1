@@ -274,6 +274,6 @@ describe('findOverlappingEvents', () => {
     };
 
     const result = findOverlappingEvents(newEvent, events);
-    expect(result).toEqual([]);
+    expect(result).toHaveLength(0);
   });
 });

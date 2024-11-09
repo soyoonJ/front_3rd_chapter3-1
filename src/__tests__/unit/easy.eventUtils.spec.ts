@@ -464,6 +464,6 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toEqual([]);
+    expect(filteredEvents).toHaveLength(0);
   });
 });

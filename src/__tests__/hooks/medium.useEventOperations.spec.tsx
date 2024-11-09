@@ -158,7 +158,7 @@ it('존재하는 이벤트 삭제 시 에러없이 아이템이 삭제된다.', 
     result.current.deleteEvent('1');
   });
 
-  expect(result.current.events).toEqual([]);
+  expect(result.current.events).toHaveLength(0);
 });
 
 const toastMock = vi.fn();
@@ -184,7 +184,7 @@ it("이벤트 로딩 실패 시 '이벤트 로딩 실패'라는 텍스트와 함
     await result.current.fetchEvents();
   });
 
-  expect(result.current.events).toEqual([]);
+  expect(result.current.events).toHaveLength(0);
   expect(toastMock).toHaveBeenCalledWith({
     title: '이벤트 로딩 실패',
     status: 'error',

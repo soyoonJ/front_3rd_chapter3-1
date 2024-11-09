@@ -26,7 +26,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => <Provider>{chil
 it('초기 상태에서는 알림이 없어야 한다', () => {
   const { result } = renderHook(() => useNotifications(events), { wrapper });
 
-  expect(result.current.notifications).toEqual([]);
+  expect(result.current.notifications).toHaveLength(0);
 });
 
 let currentCallback = () => {};
@@ -71,7 +71,7 @@ it('index를 기준으로 알림을 적절하게 제거할 수 있다', () => {
     result.current.removeNotification(0);
   });
 
-  expect(result.current.notifications).toEqual([]);
+  expect(result.current.notifications).toHaveLength(0);
   expect(result.current.notifiedEvents).toEqual(['1']);
 });
 

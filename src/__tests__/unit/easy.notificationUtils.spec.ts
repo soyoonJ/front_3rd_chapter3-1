@@ -39,17 +39,17 @@ describe('getUpcomingEvents', () => {
     const notifiedEvents = ['1'];
 
     const upcomingEvents = getUpcomingEvents(events, new Date(2024, 10, 3, 8), notifiedEvents);
-    expect(upcomingEvents).toEqual([]);
+    expect(upcomingEvents).toHaveLength(0);
   });
 
   it('알림 시간이 아직 도래하지 않은 이벤트는 반환하지 않는다', () => {
     const upcomingEvents = getUpcomingEvents(events, new Date(2024, 10, 3, 7), []);
-    expect(upcomingEvents).toEqual([]);
+    expect(upcomingEvents).toHaveLength(0);
   });
 
   it('알림 시간이 지난 이벤트는 반환하지 않는다', () => {
     const upcomingEvents = getUpcomingEvents(events, new Date(2024, 10, 3, 10), []);
-    expect(upcomingEvents).toEqual([]);
+    expect(upcomingEvents).toHaveLength(0);
   });
 });
 
