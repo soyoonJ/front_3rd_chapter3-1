@@ -11,6 +11,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
   vi.setSystemTime(new Date('2024-11-05'));
   expect.hasAssertions();
 });

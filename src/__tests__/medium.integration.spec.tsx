@@ -339,6 +339,7 @@ describe('일정 충돌', () => {
 
 it('notificationTime을 10으로 하면 지정 시간 10분 전 알람 텍스트가 노출된다', async () => {
   vi.setSystemTime(new Date('2024-11-03T08:50:00'));
+
   const initEvents: Event[] = [
     {
       id: '1',
@@ -356,7 +357,7 @@ it('notificationTime을 10으로 하면 지정 시간 10분 전 알람 텍스트
   setupMockHandler(initEvents);
   renderApp();
 
-  await waitFor(() => {
-    expect(screen.getAllByText('10분 후 알람 이벤트 일정이 시작됩니다.')[0]).toBeInTheDocument();
-  });
+  await vi.advanceTimersByTimeAsync(1000); // 1초만 진행
+
+  expect(screen.getAllByText('10분 후 알람 이벤트 일정이 시작됩니다.')[0]).toBeInTheDocument();
 });
