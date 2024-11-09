@@ -35,8 +35,20 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toHaveLength(1);
-    expect(filteredEvents[0].title).toBe('이벤트 2');
+    expect(filteredEvents).toEqual([
+      {
+        id: '2',
+        title: '이벤트 2',
+        date: '2024-11-02',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '이벤트 2입니다.',
+        location: '서울',
+        category: '카테고리 2',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+    ]);
   });
 
   it('주간 뷰에서 2024-07-01 주의 이벤트만 반환한다', () => {
@@ -84,7 +96,32 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toHaveLength(2);
+    expect(filteredEvents).toEqual([
+      {
+        id: '1',
+        title: '이벤트 1',
+        date: '2024-06-30',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '이벤트 1입니다.',
+        location: '서울',
+        category: '카테고리 1',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+      {
+        id: '2',
+        title: '이벤트 2',
+        date: '2024-07-01',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '이벤트 2입니다.',
+        location: '서울',
+        category: '카테고리 2',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+    ]);
   });
 
   it('월간 뷰에서 2024년 7월의 모든 이벤트를 반환한다', () => {
@@ -132,7 +169,32 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toHaveLength(2);
+    expect(filteredEvents).toEqual([
+      {
+        id: '2',
+        title: '이벤트 2',
+        date: '2024-07-01',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '이벤트 2입니다.',
+        location: '서울',
+        category: '카테고리 2',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+      {
+        id: '3',
+        title: '이벤트 3',
+        date: '2024-07-09',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '이벤트 3입니다.',
+        location: '서울',
+        category: '카테고리 2',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+    ]);
   });
 
   it("검색어 '이벤트'와 주간 뷰 필터링을 동시에 적용한다", () => {
@@ -180,7 +242,20 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toHaveLength(1);
+    expect(filteredEvents).toEqual([
+      {
+        id: '1',
+        title: '검색어 1',
+        date: '2024-06-30',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '검색어 1입니다.',
+        location: '이벤트',
+        category: '카테고리 1',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+    ]);
   });
 
   it('검색어가 없을 때 모든 이벤트를 반환한다', () => {
@@ -216,7 +291,32 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toHaveLength(2);
+    expect(filteredEvents).toEqual([
+      {
+        id: '1',
+        title: '검색어 1',
+        date: '2024-06-30',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '검색어 1입니다.',
+        location: '이벤트',
+        category: '카테고리 1',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+      {
+        id: '2',
+        title: '검색어 2',
+        date: '2024-07-01',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '검색어 2입니다.',
+        location: '서울',
+        category: '카테고리 2',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+    ]);
   });
 
   it('검색어가 대소문자를 구분하지 않고 작동한다', () => {
@@ -252,7 +352,32 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toHaveLength(2);
+    expect(filteredEvents).toEqual([
+      {
+        id: '1',
+        title: 'search 1',
+        date: '2024-06-30',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '검색어 1입니다.',
+        location: '이벤트',
+        category: '카테고리 1',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+      {
+        id: '2',
+        title: 'SEARCH 2',
+        date: '2024-07-01',
+        startTime: '10:00',
+        endTime: '12:00',
+        description: '검색어 2입니다.',
+        location: '서울',
+        category: '카테고리 2',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+    ]);
   });
 
   it.each([
@@ -303,7 +428,6 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toHaveLength(2);
     expect(filteredEvents).toEqual([
       {
         id: '1',
@@ -340,6 +464,6 @@ describe('getFilteredEvents', () => {
 
     const filteredEvents = getFilteredEvents(events, searchTerm, currentDate, view);
 
-    expect(filteredEvents).toHaveLength(0);
+    expect(filteredEvents).toEqual([]);
   });
 });
